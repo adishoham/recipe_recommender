@@ -70,7 +70,7 @@ def ingredients_based_recommend(ingredients, matrix, vectorizer, recipes):
     seen_before = set()
     for index in sorted_dict:
         title = recipes[index].get("title").strip().lower()
-        if not title in seen_before:
+        if not title in seen_before: #checking if the recipe has allready been added to the list
             seen_before.add(title)
             indeces.append(index)
             counter += 1
@@ -91,25 +91,25 @@ def dishes_based_recommend(dishes, matrix, recipes):
         if title:
             titles_list.append(title.lower())
     for dish in dishes:
-        matches = (get_close_matches(dish.lower(), titles_list, n = 1, cutoff=0.5))
+        matches = (get_close_matches(dish.lower(), titles_list, n = 1, cutoff=0.5)) #extracting the closest title to the dish's title
         if matches:
             matches_list.append(matches[0])
     indeces_list = []
     for i in range (len(recipes)):
         title =  recipes[i].get("title")
         if title and title.lower() in matches_list:
-            indeces_list.append(i)
-    vector = matrix[indeces_list].mean(axis = 0)
+            indeces_list.append(i) #extracting the indeces of the matches
+    vector = matrix[indeces_list].mean(axis = 0)  #making a tf-idf vector that represents the dishes
     vector = np.asarray(vector)
     scores = {}
     for i in range (matrix.shape[0]):
-        similarity = cosine_similarity(vector, matrix[i])[0][0]
+        similarity = cosine_similarity(vector, matrix[i])[0][0]   #extracting the similarities of the dishes vector to each recipes vector
         scores[i] = similarity
-    sorted_dict = sorted(scores, key= scores.get, reverse= True)
+    sorted_dict = sorted(scores, key= scores.get, reverse= True) #sorting the recipes by similarity
     counter = 0
     indeces = []
     seen_before = set()
-    for index in sorted_dict:
+    for index in sorted_dict:   #this loop's rule is to check if the index has allready been added to the list
         title = recipes[index].get("title").strip().lower()
         if not title in seen_before:
             seen_before.add(title)
@@ -117,7 +117,7 @@ def dishes_based_recommend(dishes, matrix, recipes):
             counter += 1
         if counter == 5:
             break
-    return indeces
+    return indeces   #returning a list of indeces of the recipes that are the closest to the dishes vector
     
 
 
@@ -155,7 +155,7 @@ def main():
 
             print(f"\n🍽️ {title}\n")
             print("🧂 Ingredients:")
-            print("\n".join(ingredients))  # prints each ingredient on a new line
+            print("\n".join(ingredients))  
             print("\n🧑‍🍳 How to make:\n")
             for i in directions:
                 print (i)
@@ -186,7 +186,7 @@ def main():
 
             print(f"\n🍽️ {title}\n")
             print("🧂 Ingredients:")
-            print("\n".join(ingredients))  # prints each ingredient on a new line
+            print("\n".join(ingredients))  
             print("\n🧑‍🍳 How to make:\n")
             for i in directions:
                 print (i)
