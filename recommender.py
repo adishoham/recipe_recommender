@@ -91,7 +91,7 @@ def dishes_based_recommend(dishes, matrix, recipes):
         if title:
             titles_list.append(title.lower())
     for dish in dishes:
-        matches = (get_close_matches(dish.lower(), titles_list, n = 1, cutoff=0.5)) #extracting the closest title to the dish's title
+        matches = (get_close_matches(dish.lower(), titles_list, n = 1, cutoff=0)) #extracting the closest title to the dish's title
         if matches:
             matches_list.append(matches[0])
     indeces_list = []
@@ -144,8 +144,9 @@ def main():
             user_input = input("")
             query.append(user_input)
         query.pop()
+        print("\nloading...")
         top_5 = ingredients_based_recommend(query, matrix, vectorizer, recipes)
-        print("Top 5 choices for you:")
+        print("\nTop 5 choices for you:")
 
         for i in top_5:
             recipe = recipes[i]
@@ -175,8 +176,9 @@ def main():
             user_input = input("")
             query.append(user_input)
         query.pop()
+        print("\nloading...")
         top_5 = dishes_based_recommend(query, matrix, recipes)
-        print("Top 5 choices for you:")
+        print("\nTop 5 choices for you:")
 
         for i in top_5:
             recipe = recipes[i]
